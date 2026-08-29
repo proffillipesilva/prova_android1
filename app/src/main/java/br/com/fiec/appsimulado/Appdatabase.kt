@@ -1,16 +1,14 @@
 package br.com.fiec.appsimulado
 
 import android.content.Context
-import androidx.room3.Database
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 
-import androidx.room3.Room
-import androidx.room3.RoomDatabase
-
-@Database(
-    entities = [AlunoEntity::class],
-    version = 1,
-    exportSchema = false
-)
+/**
+ * Extra (não pedido, mas necessário): é o que constrói o banco e entrega o AlunoDao.
+ */
+@Database(entities = [AlunoEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun alunoDao(): AlunoDao
@@ -19,15 +17,13 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
+                Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "aluno_database"
-                ).build()
-                INSTANCE = instance
-                instance
+                ).build().also { INSTANCE = it }
             }
         }
     }
