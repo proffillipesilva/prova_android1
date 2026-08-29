@@ -41,8 +41,16 @@ android {
         compose = true
     }
 }
+dependencies {
+    val roomVersion = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion") // Suporte a Coroutines/Flow
+    ksp("androidx.room:room-compiler:$roomVersion")       // Use kapt(...) se configurou kapt acima
+}
 
 dependencies {
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
