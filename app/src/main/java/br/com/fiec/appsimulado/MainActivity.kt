@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiec.appsimulado.databinding.ActivityAlunoBinding
 import br.com.fiec.appsimulado.databinding.ActivityMainBinding
+import br.com.fiec.appsimulado.ui.theme.Aluno
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
