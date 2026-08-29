@@ -54,10 +54,9 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.room3.common)
     implementation(libs.androidx.room3.runtime)
-    ksp("androidx.room3:room3-compiler:3.0.1")
-
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    ksp("androidx.room3:room3-compiler:3.0.1")
 
     // OkHttp e Logging Interceptor (Padrão para monitorar e depurar requisições)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
