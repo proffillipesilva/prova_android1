@@ -1,0 +1,19 @@
+package br.com.fiec.appsimulado
+
+fun AlunoEntity.toDomain(): Aluno {
+    return Aluno(
+        id = this.id,
+        nome = this.nome,
+        email = this.email,
+        foto = this.foto
+    )
+}
+
+fun Aluno.toEntity(): AlunoEntity {
+    return AlunoEntity(
+        id = this.id ?: 0,
+        nome = this.nome,
+        email = this.email,
+        foto = this.foto
+    )
+}
