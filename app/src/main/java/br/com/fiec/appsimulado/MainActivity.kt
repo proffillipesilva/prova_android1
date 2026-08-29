@@ -1,28 +1,17 @@
 package br.com.fiec.appsimulado
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import br.com.fiec.appsimulado.ui.theme.AppSimuladoTheme
-
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -32,8 +21,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.fiec.appsimulado.databinding.ActivityAlunoBinding
+import br.com.fiec.appsimulado.data.local.AlunoEntity
+import br.com.fiec.appsimulado.data.local.AppDatabase
+import br.com.fiec.appsimulado.data.remote.AlunoApiService
+import br.com.fiec.appsimulado.data.repository.AlunoLocalRepository
+import br.com.fiec.appsimulado.data.repository.AlunoRemoteRepository
 import br.com.fiec.appsimulado.databinding.ActivityMainBinding
+import br.com.fiec.appsimulado.domain.Aluno
+import br.com.fiec.appsimulado.ui.AlunoViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -55,17 +50,20 @@ class MainActivity : ComponentActivity() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 val db = AppDatabase.getDatabase(applicationContext)
-                val localRepo = AlunoLocalRepository(db.alunoDao())
+                val localRepo = AlunoLocalRepository(alunoDao = db.alunoDao())
 
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://api.exemplo.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 val apiService = retrofit.create(AlunoApiService::class.java)
-                val remoteRepo = AlunoRemoteRepository(apiService)
+                val remoteRepo = AlunoRemoteRepository(alunoApiService = apiService)
 
                 @Suppress("UNCHECKED_CAST")
-                return AlunoViewModel(remoteRepo, localRepo) as T
+                return AlunoViewModel(
+                    localRepository = localRepo,
+                    remoteRepository = remoteRepo
+                ) as T
             }
         }
     }
@@ -156,6 +154,8 @@ class MainActivity : ComponentActivity() {
         }
 
         // Exibe a imagem no Canvas de prévia
+        // ⚠️ Requer um ComposeView com id "composeCanvas" no layout
+        // e a função @Composable FotoPreviewCanvas definida no projeto.
         binding.composeCanvas.setContent {
             FotoPreviewCanvas(bitmap = fotoBitmap)
         }
