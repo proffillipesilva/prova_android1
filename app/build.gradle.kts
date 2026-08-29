@@ -54,6 +54,9 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.room3.common)
     implementation(libs.androidx.room3.runtime)
+
+    implementation("androidx.sqlite:sqlite-bundled:2.5.1")
+
     ksp("androidx.room3:room3-compiler:3.0.1")
 
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
