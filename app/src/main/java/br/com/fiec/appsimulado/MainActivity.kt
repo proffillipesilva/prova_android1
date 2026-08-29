@@ -1,28 +1,17 @@
 package br.com.fiec.appsimulado
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import br.com.fiec.appsimulado.ui.theme.AppSimuladoTheme
-
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -32,7 +21,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.fiec.appsimulado.databinding.ActivityAlunoBinding
 import br.com.fiec.appsimulado.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -50,7 +38,6 @@ class MainActivity : ComponentActivity() {
     private val localAdapter = SimpleAlunoAdapter()
     private val remoteAdapter = SimpleAlunoAdapter()
 
-    // Instanciação dos Repositórios e ViewModel via Factory
     private val viewModel: AlunoViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -70,7 +57,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // Launchers de Câmera, Galeria e Permissões
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -155,7 +141,6 @@ class MainActivity : ComponentActivity() {
             MediaStore.Images.Media.getBitmap(contentResolver, uri)
         }
 
-        // Exibe a imagem no Canvas de prévia
         binding.composeCanvas.setContent {
             FotoPreviewCanvas(bitmap = fotoBitmap)
         }
@@ -189,7 +174,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// Adapter simples para renderizar as listas de texto
 class SimpleAlunoAdapter : RecyclerView.Adapter<SimpleAlunoAdapter.ViewHolder>() {
     private var items = emptyList<String>()
 

@@ -1,16 +1,11 @@
 package br.com.fiec.appsimulado
 
 import android.content.Context
-import androidx.room3.Database
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 
-import androidx.room3.Room
-import androidx.room3.RoomDatabase
-
-@Database(
-    entities = [AlunoEntity::class],
-    version = 1,
-    exportSchema = false
-)
+@Database(entities = [AlunoEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun alunoDao(): AlunoDao
@@ -24,7 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "aluno_database"
+                    "app_simulado_db"
                 ).build()
                 INSTANCE = instance
                 instance
